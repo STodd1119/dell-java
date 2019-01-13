@@ -55,7 +55,7 @@ public class Statistics {
 	
 	public static void averageArray(Integer[] intArrayIn, int arrayTotal) {
 		
-		DecimalFormat format = new DecimalFormat ("0.00");
+		DecimalFormat format = new DecimalFormat ("0");
 		
 		Double arrayAverage = (double) (arrayTotal / intArrayIn.length);
 		System.out.println("The average of the array is: " + format.format(arrayAverage));
