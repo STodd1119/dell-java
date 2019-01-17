@@ -4,8 +4,10 @@ import java.util.Scanner;
 
 public class Statistics {
 	
+	String[] validInput = {"0", "1", "3", "4", "5", "6", "7", "8", "9"};
 	
 
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -18,6 +20,9 @@ public class Statistics {
 		Scanner reader = new Scanner(System.in);
 		String userSelString = reader.nextLine();
 		String[] userStringArray = userSelString.split(",");
+		
+		//validateUserInput(userStringArray);
+		
 		Integer[] userIntArray = new Integer[userStringArray.length];
 		
 		for (int i = 0; i< userIntArray.length; i++) {
@@ -33,6 +38,18 @@ public class Statistics {
 		reader.close();
 	}
 	
+	/*
+	public static boolean validateUserInput (String[] userinput) {
+		for (int i = 0; i < userinput.length; i++) {
+			for (int j = 0; j < validInput.length; j++) {
+				if (userinput[i] == validInput[j])
+					return true;
+			}
+			
+		}
+		
+	}
+	*/
 	public static int findMaxMinValue(Integer[] intArrayIn) {
 		
 		int maxValue = intArrayIn[0];
