@@ -4,8 +4,10 @@ public class TicTacToe {
 	
 	//global variables
 	public static char[] userGuess = new char[9];
-	public static char activeUser = 'X';
+	public static char activeUser = 'O';
 	public static Scanner reader = new Scanner(System.in);
+	public static boolean inputError = false;
+	public static boolean catWin = false;
 
 	
 	//Main Section
@@ -18,10 +20,6 @@ public class TicTacToe {
 	}
 
 	public static boolean playGame() {
-		//char[] userGuess; 
-		//userGuess = new char[9];
-		//char activeUser = 'X';
-		//Initialize array
 
 		String playAgain = "";
 		
@@ -32,13 +30,10 @@ public class TicTacToe {
 		drawBoard();
 		//while we have no winner ask for move changing active user after each call
 		while (askForMove()) {
-		 	if (activeUser == 'X') {
-		 		activeUser = 'O';
-		 	}else {
-		 		activeUser = 'X';
-		 	}
+			//keep asking for a move while we have no winner or tie
 		}
 		
+		//Ask user to play again.
 		System.out.println("Do you wish to play again? Y or N");
 		playAgain = reader.next();
 		playAgain = playAgain.toUpperCase();
@@ -51,7 +46,7 @@ public class TicTacToe {
 	}
 	
 	public static void drawBoard() {
-		
+		//print out the board with the current user guesses populated.
 		System.out.println("     |     |");
 		System.out.println("_ " + userGuess[0] + " _|_ " + userGuess[1] + " _|_ "+ userGuess[2] + " _");
 		System.out.println("     |     |");
@@ -62,8 +57,20 @@ public class TicTacToe {
 	}
 	
 	public static boolean askForMove() {
+		// Prompt for moves check for valid input and check if move is a winner.
+		
 		int userSelection = 0;
 		String userSelString = "";
+		
+		if (!inputError) {
+			if (activeUser == 'X') {
+		 		activeUser = 'O';
+		 	}else {
+		 		activeUser = 'X';
+		 	}
+		} else {
+			inputError = false;
+		}
 		
 		System.out.println("User: " + activeUser + " it is your move.");
 		System.out.println("Please enter the number of the square you wish to occupy:");
@@ -72,35 +79,34 @@ public class TicTacToe {
 		
 		if (validString(userSelString)) {
 			userSelection = Integer.parseInt(userSelString);
+		} else {
+			System.out.println("You have entered an invalid choince please try again");
+			inputError = true;
+			drawBoard();
+			return true;
+		}	
 		
-			if (spaceNotTaken(userSelection)) {
-				//assign selection to array and check for win
-				userGuess[userSelection] = activeUser;
-				
-				//check for win.  If it win announce winner and end
-				if (checkForWin()) {
-					//winner need to announce winner and close out.
-					System.out.println(activeUser + " is winner of this game.");
-					drawBoard();
-					return false;
-				}else {
-					//No winner next guess
-					
-					drawBoard();
-					return true;
-				}
-			} else {
-				//print you have entered an invalid choice repaint the board and ask to try again.
-				System.out.println("You have entered and invalid choice please try agian");
-			}
-		}else {
+		if (spaceNotTaken(userSelection)) {
+			userGuess[userSelection] = activeUser;
+		} else {
 			System.out.println("You have entered and invalid choice please try agian");
+			inputError = true;
+			return true;
 		}
 		
-		return false;
+		if (checkForWin()) {
+			//If a winner 
+			drawBoard();
+			return false;
+		}else {
+			//No winner next guess			
+			drawBoard();
+			return true;
+		}
 	}
 	
 	public static boolean validString(String input) {
+		//accept only valid input 
 		String[] validStuff = {"0", "1", "2", "3", "4", "5", "6", "7", "8"}; 
 		
 		for (int i = 0; i < validStuff.length; i++) {
@@ -113,27 +119,35 @@ public class TicTacToe {
 	}
 	
 	public static boolean spaceNotTaken(int userSelection) {
-			
+		//verify that the selected space has not already been taken by a previous guess.
 		if (userGuess[userSelection] == 'X'|| userGuess[userSelection] == 'O' ) {
 			System.out.println("That space is already taken.");
 			return false;
 		}
-		
 		return true;
 	}
 	
 	public static boolean checkForWin() {
-		
+		//Call helper methods that will verify if we have a winner.
 		if (verticalWin()) {
+			System.out.println(activeUser + " is winner of this game.");
 			return true;
 		}else if (horizontalWin()){
+			System.out.println(activeUser + " is winner of this game.");
 			return true;
 		}else if (diagonialWin()) {
+			System.out.println(activeUser + " is winner of this game.");
 			return true;
+		}else if (checkForCatGame()){
+			System.out.println("Cat Game!  NO WINNER");
+			catWin = true;
+			return true;
+		}else {
+			//do nothing
 		}
-		
 		return false;
 	}
+	
 	public static boolean verticalWin(){
 		if (userGuess[0] ==  activeUser && userGuess[1] ==  activeUser && userGuess[2] ==  activeUser) {
 			return true;
@@ -161,6 +175,23 @@ public class TicTacToe {
 		if (userGuess[0] ==  activeUser && userGuess[4] ==  activeUser && userGuess[8] ==  activeUser) {
 			return true;
 		}else if (userGuess[6] ==  activeUser && userGuess[4] ==  activeUser && userGuess[2] ==  activeUser) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean checkForCatGame() {
+		// if all guesses have been made and none of the other wins are true then Cat game
+		// no one wins.
+		if ((userGuess[0] == 'X' || userGuess[0] == 'O') &&
+				(userGuess[1] == 'X' || userGuess[1] == 'O') && 
+				(userGuess[2] == 'X' || userGuess[2] == 'O') && 
+				(userGuess[3] == 'X' || userGuess[3] == 'O') && 
+				(userGuess[4] == 'X' || userGuess[4] == 'O') && 
+				(userGuess[5] == 'X' || userGuess[5] == 'O') && 
+				(userGuess[6] == 'X' || userGuess[6] == 'O') && 
+				(userGuess[7] == 'X' || userGuess[7] == 'O') && 
+				(userGuess[8] == 'X' || userGuess[8] == 'O')) {
 			return true;
 		}
 		return false;
