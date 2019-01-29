@@ -77,8 +77,9 @@ public class GradeBook {
 	public static Double averageArray(Integer[] intArrayIn, int arrayTotal) {
 		// Input: Integer array and a Total of numbers in that array.
 		// Output: Double value that is the average of that array.
+		double doubTotal = (double) arrayTotal;
 		
-		Double arrayAverage = (double) (arrayTotal / intArrayIn.length);
+		Double arrayAverage = (double) (doubTotal / intArrayIn.length);
 		return arrayAverage;
 	}
 
