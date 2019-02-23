@@ -39,7 +39,7 @@ public class WordGuessGame {
 		String wordToGuess = wordList.get(randNum);
 
 		//DEBUG - Uncommented this will print the solution before the prompt for guess ***remove for final version
-		System.out.println(wordToGuess);
+		//System.out.println(wordToGuess);
 		
 		System.out.println("Welcome to the word guessing game.");
 		System.out.println("I will select a word at random from a ");
