@@ -117,8 +117,16 @@ public class Controller {
     }
     
 	public void processAddItem() {
-		String stringId = consoleUtils.promptString("Please enter the id:");
-		int id = Integer.parseInt(stringId);
+		int id = 0;
+		try {
+			String stringId = consoleUtils.promptString("Please enter the id:");
+			id = Integer.parseInt(stringId);
+		}
+		catch (Exception e) {
+			System.out.println("Your entry needs to be a number. Please enter Help for proper syntax.  Enter add to retry.");
+			return;
+		}
+		
 	    String description = consoleUtils.promptString("Please enter a description:");
 		int completeFlag = 0;
 		
@@ -134,10 +142,16 @@ public class Controller {
             consoleUtils.error("Too many inputs to delete command");
             return;
         }
-
-        int id = Integer.parseInt(actionParts[1]);
-		
-        todoList.delete(todoList.get(id));
+        int id = 0;
+        try {
+        	id = Integer.parseInt(actionParts[1]);
+        	todoList.delete(todoList.get(id));
+        }
+        catch (Exception e) {
+        	System.out.println("ERROR: " + e);
+        	consoleUtils.error("System error.  Please check the Help command for proper syntax.");
+        }
+       
     }
 	
 }
