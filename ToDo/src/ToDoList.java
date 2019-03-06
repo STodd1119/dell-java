@@ -24,41 +24,61 @@ public class ToDoList {
 	    //Methods
 		public List<ToDoItem> list() {
 			//return a listing of the entire contents of the database.
-			
-			
+					
 			return getDatabase();
 		}
-		
-		
+			
 		public ToDoItem get(int id){
 			//get an entry by id
 			List<ToDoItem> ToDoList = this.getDatabase();
-			ToDoItem retToDoList = new ToDoItem(id, null, 0);
+			ToDoItem retToDoItem = new ToDoItem(id, null, 0);
 			for (int i = 0; i < database.size(); i++) {
 				ToDoItem currToDoList = ToDoList.get(i);
 				if (currToDoList.getId() == id) {
-					retToDoList = currToDoList;
+					retToDoItem = currToDoList;
 					break;
 				}else {
-					retToDoList = null;
+					retToDoItem = null;
 				}
 			}
-			return retToDoList;
+			return retToDoItem;
 		}
-		public ToDoItem getListByStatus (int completeFlag) {
-			//get an entry by id
+		
+		public ToDoItem changeStatus(int id) {
 			List<ToDoItem> ToDoList = this.getDatabase();
-			ToDoItem retToDoList = new ToDoItem(completeFlag, null, 0);
+			ToDoItem retToDoItem = new ToDoItem(id,null, 0);
 			for (int i = 0; i < database.size(); i++) {
 				ToDoItem currToDoList = ToDoList.get(i);
-				if (currToDoList.getId() == completeFlag) {
-					retToDoList = currToDoList;
+				if (currToDoList.getId() == id) {
+					retToDoItem.setCompleteFlag(1);
+					//NEED TO SET THE VALUE IN THE DATABASE.  I NEED TO RETURN THE MODIFIED VALUE TO THE CALLER
+					//retToDoItem = currToDoList;
 					break;
 				}else {
-					retToDoList = null;
+				//	retToDoItem = null;
+				}
+			}
+			
+			
+			return retToDoItem;
+		}
+		
+		
+		
+		public List<ToDoItem> getListByStatus (int completeFlag) {
+			//get an entry by complete flag
+			List<ToDoItem> retToDoList = new ArrayList<ToDoItem>();
+			for (int i = 0; i < database.size(); i++) {
+				ToDoItem currToDoItem = database.get(i);
+				if (currToDoItem.getCompleteFlag() == completeFlag) {
+					//retToDoItem = currToDoList;
+					//add the item to the return list
+					retToDoList.add(currToDoItem);
 				}
 			}
 			return retToDoList;
+
+
 		}
 		
 		public void delete(ToDoItem entry) {

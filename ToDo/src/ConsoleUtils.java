@@ -28,7 +28,6 @@ public class ConsoleUtils {
         System.out.println("add                add item to the todo list");
         System.out.println("del <item num>     delete an item from the todo list by supplying the item number.");
         System.out.println("mc <item num>      mark an item number complete.");
-
         System.out.println("q                  quit the app");
         System.out.println();
 
@@ -60,7 +59,7 @@ public class ConsoleUtils {
     }
 
 	/*
-	 * Prints a list of TimesheetEntry objects in a pretty table
+	 * Prints a list of ToDoItem objects in a pretty table
 	 */
     public void printList(List<ToDoItem> entries){
         int longestDescription =  11;
@@ -85,13 +84,13 @@ public class ConsoleUtils {
 
         for(ToDoItem entry : entries){
             String description = String.format("%-"+longestDescription+"s", entry.getDescription());
-            String completeFlag = String.format("%-"+longestCompleteFlag+"s", entry.getCompleteFlag());
-            if (completeFlag== "0") {
-            	completeFlag = "Yes";
+            String completeFlag = "";
+            if (entry.getCompleteFlag() == 1) {
+            	completeFlag = String.format("%-"+longestCompleteFlag+"s", "YES");
             }else {
-            	completeFlag = "No";
+            	completeFlag = String.format("%-"+longestCompleteFlag+"s", "NO");
             }
-           
+
             String line = String.format(" %2s | %s | %s  ", entry.getId(), description, completeFlag);
             System.out.println(line);
         }
