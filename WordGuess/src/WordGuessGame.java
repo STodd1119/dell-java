@@ -8,6 +8,8 @@ public class WordGuessGame {
 	public static Scanner reader = new Scanner(System.in);
 	public static char[] usedLetters = new char[26];
 	public static int numberOfGuesses = 0;
+	public static int badGuesses = 0;
+	public static boolean letterFound = false;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader in = null;
@@ -80,10 +82,20 @@ public class WordGuessGame {
 				numberOfGuesses++;
 			
 				// Evaluate user guess and change the display with the letters of the guess that were correct.
+				letterFound = false;
 				for (int i= 0; i<wordToGuessChar.length; i++) {
 					if(wordToGuessChar[i] == userGuessChar){
 						wtgDisplay[i] = userGuessChar;
+						letterFound = true;
 					}
+				}
+				//if letter not found increase num guesses and reset letter found HERE
+				if (! letterFound) {
+					//numberOfGuesses++;
+					badGuesses++;
+					System.out.println("This letter is not in the word.");
+					letterFound = false;
+	
 				}
 			
 				// Call helper method that will check the display for any remaining dashes
@@ -105,8 +117,9 @@ public class WordGuessGame {
 		System.out.println(wtgDisplay );
 		System.out.println("is the word.");
 		System.out.println();
-		System.out.println();
+		System.out.println("You had " + badGuesses + " bad guesses.");
 		System.out.println("You got all the letters in "+ numberOfGuesses + " guesses.  Good job");
+		
 		
 		
 	}
@@ -129,15 +142,19 @@ public class WordGuessGame {
 		// length, empty guess, numeric input, and if the letter has been used.
 		if (userGuess.length()>1) {
 			System.out.println("You may submit only one character.  Please try again...");
+			badGuesses ++;
 			return false;
 		} else if (userGuess.isEmpty()) {
 			System.out.println("You must enter a character to guess.  Please try again...");
+			badGuesses ++;
 			return false;
 		} else if (isNumeric(userGuess)) {
 			System.out.println("you must enter a character to guess.  Please try again...");
+			badGuesses ++;
 			return false;
 		}else if (hasLetterBeenUsed(userGuess)){
 			System.out.println("The letter: " + userGuess + " has already been used. Please select another.");
+			badGuesses ++;
 			return false;
 		} else {
 			return true;
